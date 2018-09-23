@@ -22,6 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'rku-&ho6%)mg7(u2#xw9exc!&z6+hlj!vd@r8+0ht+@)6d2%_7'
 
+GOOGLE_CLIENTE_CREDENTIALS_JSON =  BASE_DIR + '/credentials.json'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

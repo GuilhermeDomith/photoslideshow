@@ -1,10 +1,12 @@
 from django.urls import path
-from . import  views
+from photos.views import  auth, init
 
 app_name = 'photos'
+
 urlpatterns = [
-    path('index/', views.IndexView.as_view(), name='index'), 
-    path('', views.auth_photos, name='auth_photos'),
-    path('return_auth/', views.return_auth, name='return_auth')
-    #path('<>', views.login, name='logar'),   
+    path('index/', init.IndexView.as_view(), name='index'), 
+
+    path('', auth.auth_photos, name='auth_photos'),
+    path('return_auth/', auth.return_auth, name='return_auth')
+    #path('<>', auth.login, name='logar'),   
 ]

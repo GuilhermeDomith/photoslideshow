@@ -7,5 +7,11 @@
         <li>{{album}}</li>
     </ul>
     {% endfor %}
+
+    {% if user.is_authenticated %}
+             <p class="display-4">Hello, {{ user.username }}</p>
+	{% else %}
+             <a class="lead" href="{% url 'login' %}">Log in</a>
+	{% endif %}
     
 {% endblock %}

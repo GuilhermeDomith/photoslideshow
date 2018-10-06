@@ -1,4 +1,4 @@
-"""animaphotos URL Configuration
+"""photoslideshow URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/dev/topics/http/urls/
@@ -16,7 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf.urls import url
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('photos/', include('photos.urls'))
+    path('photos/', include('photos.urls')),
+    path('usuario/', include('usuario.urls')),
+    # nescessário para o login.
+    path('auth/', include('social_django.urls', namespace='social'))
+
+    ##url('login/', views.LoginView.as_view(), name='login'),
+    #url('logout/', views.auth_logout, name='logout'),
 ]

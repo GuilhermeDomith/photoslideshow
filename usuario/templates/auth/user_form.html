@@ -1,0 +1,17 @@
+{% extends "../photos/base/base.html" %}
+
+
+{% block main %}
+  <h2>Criar Usuário</h2>
+  <form action="" method="post">
+    {% csrf_token %}
+ 
+    Nome: <input type="text" name="first_name"> 
+    Sobrenome: <input type="text" name="last_name">
+    Nome de Usuário: <input type="text" name="username">
+    Email: <input type="text" name="email">
+    Senha: <input type="password" name="password">
+
+    <input type="submit" value="Cadastrar">
+  </form>
+{% endblock %}

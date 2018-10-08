@@ -1,0 +1,17 @@
+{% extends 'photos/base/base.html' %}
+{% load static %}
+
+{% block main %}
+
+    <ul>
+        {% for foto in fotos%}
+        <li>{{album_key}}
+            <Strong><a>{{foto.filename}}</a></Strong>
+            
+            <p>{{foto}}</p>
+            <img src="{% static 'photos/img/' %}{{album_key}}/{{foto.filename}}"/>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

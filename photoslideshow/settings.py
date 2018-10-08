@@ -22,9 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'rku-&ho6%)mg7(u2#xw9exc!&z6+hlj!vd@r8+0ht+@)6d2%_7'
 
+
 GOOGLE_CLIENTE_CREDENTIALS_JSON =  BASE_DIR + '/credentials.json'
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='554833195435-gdltcrcse71fpgbhvrh37a6rlbg1o6ts.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'NGZhupl3oKqbH2bos942LxQG'
+''''
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='554833435-gdltcrcse71fpgbhvra6rlbg1o6ts.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'l3oKqbH2bos942LxQG'
+'''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

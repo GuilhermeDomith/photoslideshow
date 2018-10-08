@@ -2,11 +2,16 @@
 
 {% block main %}
 
-    {% for album in albuns%}
     <ul>
-        <li>{{album}}</li>
+        {% for album in albuns%}
+        <li>
+            <Strong><a>{{album.title}}</a></Strong>
+            <p>Nº de fotos: <strong>{{album.mediaItemsCount}}</strong></p>
+            <p><a href="{% url 'photos:slideshow' forloop.counter %}">CRIAR SLIDESHOW</a></p>
+            <p><a href="{{ album.productUrl }}">Abrir no google photos</a></p>
+        </li>
+        {% endfor %}
     </ul>
-    {% endfor %}
 
     {% if user.is_authenticated %}
              <p class="display-4">Hello, {{ user.username }}</p>

@@ -3,15 +3,6 @@
 
 {% block main %}
 
-    <ul>
-        {% for foto in fotos%}
-        <li>{{album_key}}
-            <Strong><a>{{foto.filename}}</a></Strong>
-            
-            <p>{{foto}}</p>
-            <img src="{% static 'photos/data_users/' %}{{user.username}}/albuns/{{album_id}}/{{foto.filename}}"/>
-        </li>
-        {% endfor %}
-    </ul>
+<object data="{% static 'photos/data_users' %}{{path_video}}"></object>
 
 {% endblock %}

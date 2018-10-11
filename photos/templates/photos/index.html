@@ -7,7 +7,7 @@
         <li>
             <Strong><a>{{album.title}}</a></Strong>
             <p>Nº de fotos: <strong>{{album.mediaItemsCount}}</strong></p>
-            <p><a href="{% url 'photos:slideshow' forloop.counter %}">CRIAR SLIDESHOW</a></p>
+            <p><a href="{% url 'photos:selecao' forloop.counter %}">CRIAR SLIDESHOW</a></p>
             <p><a href="{{ album.productUrl }}">Abrir no google photos</a></p>
         </li>
         {% endfor %}

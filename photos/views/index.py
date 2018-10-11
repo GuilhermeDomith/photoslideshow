@@ -3,8 +3,10 @@ from django.views import generic
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from usuario.views import googleauth
 from photoslideshow import settings
+from photoslideshow.src.slideshow import Slideshow
 
 import threading, json, os
 
@@ -34,33 +36,48 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 		else:
 			return super().get(self, request, *args, **kwargs)
 
-
-def slideshow(request, num_album):
+@login_required
+def selecao(request, num_album):
 	if num_album < 1 or num_album > len(request.session['albuns']):
-		return Http404("Este album não existe.")
+		raise Http404("Album não não encontrado.")
 
 	album = request.session['albuns'][num_album - 1]
-	path_album = '{path}/{user}/albuns/{id}'.format(path=PATH_IMAGENS, user=request.user, id=album['id'])
-	print('--->'+path_album)
-	if path_album not in request.session:
-		session = googleauth.get_session(request.user)
-		response = session.request(
-						'POST', 
-						URL_LISTAR_MIDIAS, 
-						data={'pageSize': 100, 'albumId': album['id']}
-					)
+	session = googleauth.get_session(request.user)
+	response = session.request(
+					'POST', 
+					URL_LISTAR_MIDIAS, 
+					data={'pageSize': 100, 'albumId': album['id']}
+				)
 
-		request.session[path_album] = json.loads(response.text)['mediaItems']
+	album_id = album['id']
+	request.session[album_id] = json.loads(response.text)['mediaItems']
+	return render(request, 
+				'photos/selecao.html', 
+				{ 'album_id': album_id, 'fotos_info': request.session[album_id]})
 
-		if not os.path.exists(path_album):
-			os.mkdir(path_album)
 	
-		for foto_info in request.session[path_album]:
-			download_imagem(session, path_album, foto_info)
+@login_required
+def slideshow(request, album_id):
+	if album_id not in request.session:
+		raise Http404("As fotos selecionadas não foram encontradas.")
+
+	fotos_info = request.session[album_id]
+	index_fotos = list(request.POST)[1:]
+	path_album = '{path}/{user}/albuns/{id}'.format(path=PATH_IMAGENS, user=request.user, id=album_id)
+	
+	if not os.path.exists(path_album):
+		os.mkdir(path_album)
+
+	session = googleauth.get_session(request.user)
+	for index in index_fotos:
+		download_imagem(session, path_album, fotos_info[int(index)-1])
+
+	path_video = '{path}/{user}/videos'.format(path=PATH_IMAGENS, user=request.user)
+	video = Slideshow(path_album, path_video, video_filename='teste')
+	video.criar()
 
 	return render(request, 'photos/slideshow.html', {
-				'album_id': album['id'],
-				'fotos': request.session[path_album]
+				'path_video': video.absolute_path.replace(PATH_IMAGENS, '')
 		   })
 
 
@@ -74,4 +91,4 @@ def download_imagem(session_photos, path, foto_info):
 			with open(path_foto, 'wb') as foto:
 				foto.write(response.content)
 	except Exception as e:
-		print(e+'\n'+foto_info)
+		raise 'Erro ao fazer dowload da imagem %s'%foto_info['filename']

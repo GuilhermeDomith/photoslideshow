@@ -17,9 +17,12 @@ class Slideshow():
             'mp4': cv2.VideoWriter_fourcc(*'XVID'),
     }
 
-    def __init__(self, dir_fotos=None, video_filename=None, video_type='avi', std_dimension='720p'):
+    def __init__(self, dir_fotos=None, dir_video=None, video_filename=None, video_type='avi', std_dimension='720p'):
         self.dir_fotos = dir_fotos
         self.video_filename = video_filename
+        self.dir_video = dir_video
+        self.absolute_path = '{path}/{file}.{ext}'.format(path=dir_video, file=video_filename,ext=video_type)
+
         self.fps = 24
         self.segundos_por_img = 5
 
@@ -32,7 +35,7 @@ class Slideshow():
 
     def _criar_video_writer(self):
          return cv2.VideoWriter(
-                    '{}.{}'.format(self.video_filename, self.video_type), 
+                    self.absolute_path, 
                     self.videowriter_type,
                     self.fps, 
                     self.dimensao
@@ -44,8 +47,9 @@ class Slideshow():
         out = self._criar_video_writer()
         
         for file_name in file_names:
-            print(self.dir_fotos+file_name)
-            img = cv2.imread('%s/%s' %(self.dir_fotos, file_name))
+            path_foto = '{path}/{file}'.format(path=self.dir_fotos, file=file_name)
+            ''' IMAGEM COM ESPAÇO NO NOME NÃO ESTÁ ABRINDO'''
+            img = cv2.imread(path_foto)
 
             img_fundo = self._criar_fundo()
             imagem = self._criar_imagem_slide(img_fundo, img)

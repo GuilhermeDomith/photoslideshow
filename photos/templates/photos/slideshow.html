@@ -9,7 +9,7 @@
             <Strong><a>{{foto.filename}}</a></Strong>
             
             <p>{{foto}}</p>
-            <img src="{% static 'photos/img/' %}{{album_key}}/{{foto.filename}}"/>
+            <img src="{% static 'photos/data_users/' %}{{user.username}}/albuns/{{album_id}}/{{foto.filename}}"/>
         </li>
         {% endfor %}
     </ul>

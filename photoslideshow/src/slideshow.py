@@ -14,10 +14,11 @@ class Slideshow():
     VIDEO_TYPE = {
             'avi': cv2.VideoWriter_fourcc(*'XVID'),
             #'mp4-h': cv2.VideoWriter_fourcc(*'H264'),
-            'mp4': cv2.VideoWriter_fourcc(*'XVID'),
+            #'mp4': cv2.VideoWriter_fourcc(*'X264'),
+            'mp4': cv2.VideoWriter_fourcc(*'avc1'),
     }
 
-    def __init__(self, dir_fotos=None, dir_video=None, video_filename=None, video_type='avi', std_dimension='720p'):
+    def __init__(self, dir_fotos=None, dir_video=None, video_filename=None, video_type='mp4', std_dimension='720p'):
         self.dir_fotos = dir_fotos
         self.video_filename = video_filename
         self.dir_video = dir_video

@@ -72,12 +72,12 @@ def slideshow(request, album_id):
 	for index in index_fotos:
 		download_imagem(session, path_album, fotos_info[int(index)-1])
 
-	path_video = '{path}/{user}/videos'.format(path=PATH_IMAGENS, user=request.user)
-	video = Slideshow(path_album, path_video, video_filename='teste')
-	video.criar()
+	path_saida = '{path}/{user}/videos'.format(path=PATH_IMAGENS, user=request.user)
+	video_slideshow = Slideshow(path_album, path_saida, video_filename='teste')
+	video_slideshow.criar()
 
 	return render(request, 'photos/slideshow.html', {
-				'path_video': video.absolute_path.replace(PATH_IMAGENS, '')
+				'path_video': video_slideshow.absolute_path.replace(PATH_IMAGENS, '')
 		   })
 
 
@@ -90,5 +90,5 @@ def download_imagem(session_photos, path, foto_info):
 		if not os.path.exists(path_foto):
 			with open(path_foto, 'wb') as foto:
 				foto.write(response.content)
-	except Exception as e:
+	except:
 		raise 'Erro ao fazer dowload da imagem %s'%foto_info['filename']

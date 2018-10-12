@@ -7,7 +7,7 @@
     {% csrf_token %}
     <ul>
         {% for foto in fotos_info%}
-        <li><input type="checkbox" checked name="{{forloop.counter }}" value="{{foto.id}}"/>
+        <li><input type="checkbox" checked name="{{forloop.counter}}" value="{{foto.id}}"/>
             <Strong><a>{{foto.filename}}</a></Strong>
             <p>{{foto}}</p>
             <img src="{{foto.baseUrl}}"/>

@@ -2,6 +2,18 @@ import cv2, os, math
 import numpy as np
 
 class Slideshow():
+    """
+    Classe para criação de um slideshow a partir das fotos e configurações inseridas.
+
+    :param dir_fotos: Path do diretório que mantém as fotos a serem utilizadas.
+    :param dir_video: Path do diretório em que será armazenado o slideshow após criado.
+    :param video_filename: Nome do slideshow a ser criado.
+    :param video_type: Formato do arquivo de vídeo a ser criado.
+    :param std_dimension: Resolução do arquivo de vídeo a ser criado.
+    :param fotos_filename: Lista com os nomes dos arquivos a serem usadas para criação 
+        do slideshow. Arquivos que serão buscados do path informado 'self.dir_fotos'. 
+        Caso não seja informado esta lista, todas as fotos do diretório serão utilizadas.
+    """
 
     STD_DIMENSIONS =  {
         "360p": (480, 360),
@@ -18,10 +30,12 @@ class Slideshow():
             'mp4': cv2.VideoWriter_fourcc(*'avc1'),
     }
 
-    def __init__(self, dir_fotos=None, dir_video=None, video_filename=None, video_type='mp4', std_dimension='720p'):
+    def __init__(self, dir_fotos=None, dir_video=None, video_filename=None, 
+                    video_type='mp4', std_dimension='720p', fotos_filename=None):
         self.dir_fotos = dir_fotos
         self.video_filename = video_filename
         self.dir_video = dir_video
+        self.fotos_filename = fotos_filename
         self.absolute_path = '{path}/{file}.{ext}'.format(path=dir_video, file=video_filename,ext=video_type)
 
         self.fps = 24
@@ -44,13 +58,21 @@ class Slideshow():
 
 
     def criar(self):
-        file_names = os.listdir(self.dir_fotos)
         out = self._criar_video_writer()
         
-        for file_name in file_names:
+        if  self.fotos_filename is None:
+            self.fotos_filename = os.listdir(self.dir_fotos)
+
+        for file_name in self.fotos_filename:
             path_foto = '{path}/{file}'.format(path=self.dir_fotos, file=file_name)
+            
             ''' IMAGEM COM ESPAÇO NO NOME NÃO ESTÁ ABRINDO'''
             img = cv2.imread(path_foto)
+            print(path_foto)
+            print(img)
+
+            if img is None: 
+                continue
 
             img_fundo = self._criar_fundo()
             imagem = self._criar_imagem_slide(img_fundo, img)

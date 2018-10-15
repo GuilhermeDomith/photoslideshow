@@ -8,6 +8,7 @@ from usuario.views import googleauth
 from photoslideshow import settings
 from photoslideshow.src.slideshow import Slideshow
 
+from datetime import datetime
 import threading, json, os
 
 URL_LISTAR_ALBUMS = 'https://photoslibrary.googleapis.com/v1/albums'
@@ -23,12 +24,19 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 	'''
 
 	def get_queryset(self):
+		"""
+		Obtém os albuns a serem listados na página.
+		"""
 		albuns = self.session_photos.get(URL_LISTAR_ALBUMS)
 		self.request.session['albuns'] = albuns.json()['albums']
 		return self.request.session['albuns']
 
 
 	def get(self, request, *args, **kwargs):
+		"""
+		Verifica se usuário já autorizou o acesso ao google photos, senão redireciona 
+		para a página de autorização.
+		"""
 		self.session_photos = googleauth.get_session(request.user)
 
 		if not self.session_photos:
@@ -41,42 +49,81 @@ def selecao(request, num_album):
 	if num_album < 1 or num_album > len(request.session['albuns']):
 		raise Http404("Album não não encontrado.")
 
-	album = request.session['albuns'][num_album - 1]
+	# Obtém o número que será usado para identificar o slideshow
+	slideshow_info = {'codigo': int(datetime.now().timestamp())}
+	slideshow_info['album'] = request.session['albuns'][num_album - 1]
+
 	session = googleauth.get_session(request.user)
 	response = session.request(
 					'POST', 
 					URL_LISTAR_MIDIAS, 
-					data={'pageSize': 100, 'albumId': album['id']}
+					data={
+						'pageSize': 100, 
+						'albumId': slideshow_info['album']['id']
+					}
 				)
 
-	album_id = album['id']
-	request.session[album_id] = json.loads(response.text)['mediaItems']
-	return render(request, 
-				'photos/selecao.html', 
-				{ 'album_id': album_id, 'fotos_info': request.session[album_id]})
+	slideshow_info['album']['fotos'] = json.loads(response.text)['mediaItems']
+	request.session['slideshow'] = slideshow_info
 
-	
+	return render(request, 'photos/selecao.html', )
+
 @login_required
-def slideshow(request, album_id):
-	if album_id not in request.session:
+def configuracao(request, slideshow_codigo):
+	if not slideshow_codigo == request.session['slideshow']['codigo']:
 		raise Http404("As fotos selecionadas não foram encontradas.")
 
-	fotos_info = request.session[album_id]
 	index_fotos = list(request.POST)[1:]
-	path_album = '{path}/{user}/albuns/{id}'.format(path=PATH_IMAGENS, user=request.user, id=album_id)
+	fotos_selecionadas = []
+	fotos = request.session['slideshow']['album']['fotos']
+
+	for index in index_fotos:
+		fotos_selecionadas.append(fotos[int(index) - 1])
+
+	request.session['slideshow']['fotos'] = fotos_selecionadas
+
+	return render(request, 
+				'photos/configuracao.html',
+				{	
+					'formatos': Slideshow.VIDEO_TYPE.keys(), 
+					'resolucoes': Slideshow.STD_DIMENSIONS.keys()
+				}
+			)
+	
+@login_required
+def slideshow(request, slideshow_codigo):
+	
+	slideshow_info = request.session['slideshow']
+	if not slideshow_codigo == slideshow_info['codigo']:
+		raise Http404("As fotos selecionadas não foram encontradas.")
+
+	slideshow_info['formato'] = request.POST['formato']
+	slideshow_info['resolucao'] = request.POST['resolucao']
+
+	path_album = '{path}/{user}/albuns/{id}'.format(path=PATH_IMAGENS, 
+													user=request.user, 
+													id=slideshow_info['album']['id'])
 	
 	if not os.path.exists(path_album):
 		os.mkdir(path_album)
 
 	session = googleauth.get_session(request.user)
-	for index in index_fotos:
-		download_imagem(session, path_album, fotos_info[int(index)-1])
+	for foto_info in slideshow_info['fotos']:
+		download_imagem(session, path_album, foto_info)
 
 	path_saida = '{path}/{user}/videos'.format(path=PATH_IMAGENS, user=request.user)
-	video_slideshow = Slideshow(path_album, path_saida, video_filename='teste')
+	video_slideshow = Slideshow(
+							path_album, 
+							path_saida, 
+							video_filename = slideshow_info['codigo'], 
+							video_type = slideshow_info['formato'], 
+							std_dimension = slideshow_info['resolucao'],
+							fotos_filename = [foto['filename'] for foto in slideshow_info['fotos']]
+					)
 	video_slideshow.criar()
 
 	return render(request, 'photos/slideshow.html', {
+				# Obtém apenas o caminho após  static/photos/data_users/
 				'path_video': video_slideshow.absolute_path.replace(PATH_IMAGENS, '')
 		   })
 
@@ -86,7 +133,6 @@ def download_imagem(session_photos, path, foto_info):
 
 	try:
 		path_foto = '{path}/{file_name}'.format(path=path, file_name=foto_info['filename'])
-
 		if not os.path.exists(path_foto):
 			with open(path_foto, 'wb') as foto:
 				foto.write(response.content)

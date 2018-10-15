@@ -1,0 +1,36 @@
+{% extends 'photos/base/base.html' %}
+{% load static %}
+
+{% block main %}
+
+<form action="{% url 'photos:slideshow'  request.session.slideshow.codigo %}" method="POST">
+    {% csrf_token %}
+    <div>
+        {% for formato in formatos %}
+        <Label>
+            {% if formato == 'mp4' %}
+            <input type="radio" name="formato" value="{{formato}}" checked >
+            {% else %}
+            <input type="radio" name="formato" value="{{formato}}">
+            {% endif %}
+            {{formato}} 
+        </Label>
+        {% endfor %}
+    </div>
+
+    <div>
+        {% for resolucao in resolucoes %}
+        <Label>
+            {% if resolucao == '720p' %}
+            <input type="radio" name="resolucao" value="{{resolucao}}" checked>
+            {% else %}
+            <input type="radio" name="resolucao" value="{{resolucao}}">
+            {% endif %}
+            {{resolucao}} 
+        </Label>
+        {% endfor %}
+    </div>
+    <Input type="submit" value="Salvar">
+</form>
+
+{% endblock %}

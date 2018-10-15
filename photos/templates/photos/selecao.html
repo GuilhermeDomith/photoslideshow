@@ -3,10 +3,10 @@
 
 {% block main %}
 
-<form action="{% url 'photos:slideshow' album_id %}" method="POST">
+<form action="{% url 'photos:configuracao' request.session.slideshow.codigo %}" method="POST">
     {% csrf_token %}
     <ul>
-        {% for foto in fotos_info%}
+        {% for foto in request.session.slideshow.album.fotos %}
         <li><input type="checkbox" checked name="{{forloop.counter}}" value="{{foto.id}}"/>
             <Strong><a>{{foto.filename}}</a></Strong>
             <p>{{foto}}</p>

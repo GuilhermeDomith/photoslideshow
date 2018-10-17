@@ -66,21 +66,24 @@ def selecao(request, num_album):
 	slideshow_info['album']['fotos'] = json.loads(response.text)['mediaItems']
 	request.session['slideshow'] = slideshow_info
 
-	return render(request, 'photos/selecao.html', )
+	return render(request, 'photos/selecao.html')
 
 @login_required
 def configuracao(request, slideshow_codigo):
-	if not slideshow_codigo == request.session['slideshow']['codigo']:
+	slideshow_info = request.session['slideshow']
+	if not slideshow_codigo == slideshow_info['codigo']:
 		raise Http404("As fotos selecionadas não foram encontradas.")
 
 	index_fotos = list(request.POST)[1:]
 	fotos_selecionadas = []
-	fotos = request.session['slideshow']['album']['fotos']
+	fotos = slideshow_info['album']['fotos']
 
 	for index in index_fotos:
 		fotos_selecionadas.append(fotos[int(index) - 1])
 
-	request.session['slideshow']['fotos'] = fotos_selecionadas
+	slideshow_info['fotos'] = fotos_selecionadas
+	request.session['slideshow'] = slideshow_info
+	print('1 --> '+ str(request.session['slideshow']) + '\n\n')
 
 	return render(request, 
 				'photos/configuracao.html',
@@ -99,19 +102,22 @@ def slideshow(request, slideshow_codigo):
 
 	slideshow_info['formato'] = request.POST['formato']
 	slideshow_info['resolucao'] = request.POST['resolucao']
+	print('2 --> '+ str(request.session['slideshow']) + '\n\n')
 
 	path_album = '{path}/{user}/albuns/{id}'.format(path=PATH_IMAGENS, 
 													user=request.user, 
 													id=slideshow_info['album']['id'])
 	
-	if not os.path.exists(path_album):
-		os.mkdir(path_album)
+	#if not os.path.exists(path_album):
+	os.makedirs(path_album, exist_ok=True)
 
 	session = googleauth.get_session(request.user)
 	for foto_info in slideshow_info['fotos']:
 		download_imagem(session, path_album, foto_info)
 
 	path_saida = '{path}/{user}/videos'.format(path=PATH_IMAGENS, user=request.user)
+	os.makedirs(path_saida, exist_ok=True)
+
 	video_slideshow = Slideshow(
 							path_album, 
 							path_saida, 

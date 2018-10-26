@@ -2,14 +2,51 @@
 
 {% block main %}
 
-    <ul>
+<div class="container">
+    <p class="text-justify mt-1">
+        <span class="font-weight-bold">Álbuns</span>
+        <span class="font-weight-bold"> > </span>
+        <span class="font-weight-normal">Seleção</span>
+        <span class="font-weight-bold"> > </span>
+        <span class="font-weight-normal">Configuração</span>
+        <span class="font-weight-bold"> > </span>
+    </p>
+
+    <h2 class="mt-sm-5 mt-3">Meus Álbuns</h2>
+    <p class="text-justify">
+        Selecione um álbum para configurar o seu slideshow.
+    </p>
+
+    <div class="mt-sm-5 mt-3">
         {% for album in albuns%}
-        <li>
-            <Strong><a>{{album.title}}</a></Strong>
-            <p>Nº de fotos: <strong>{{album.mediaItemsCount}}</strong></p>
-            <p><a href="{% url 'photos:selecao' forloop.counter %}">CRIAR SLIDESHOW</a></p>
-            <p><a href="{{ album.productUrl }}">Abrir no google photos</a></p>
-        </li>
+        <div class="card mb-3">
+
+            <h5 class="card-header">{{album.title}}</h5>
+
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-9">
+                            <p class="card-text font-weight-bold">{{album.mediaItemsCount}}
+                                foto{{album.mediaItemsCount|pluralize}}</p>
+                            <a class="btn btn-primary" href="{% url 'photos:selecao' forloop.counter %}">CRIAR
+                                SLIDESHOW</a>
+                            <a class="btn btn-secondary" href="{{ album.productUrl }}">GOOGLE PHOTOS</a>
+                        </div>
+
+                        <div class="col-3 text-center">
+                            <img src="{{album.coverPhotoBaseUrl}}" class="w-75 rounded" alt="...">
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
         {% endfor %}
-    </ul>
+
+    </div>
+</div>
+
 {% endblock %}

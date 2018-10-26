@@ -3,18 +3,75 @@
 
 {% block main %}
 
-<form action="{% url 'photos:configuracao' request.session.slideshow.codigo %}" method="POST">
+<!-- <form action="{% url 'photos:configuracao' request.session.slideshow.codigo %}" method="POST">
     {% csrf_token %}
     <ul>
         {% for foto in request.session.slideshow.album.fotos %}
-        <li><input type="checkbox" checked name="{{forloop.counter}}" value="{{foto.id}}"/>
+        <li><input type="checkbox" checked name="{{forloop.counter}}" value="{{foto.id}}" />
             <Strong><a>{{foto.filename}}</a></Strong>
             <p>{{foto}}</p>
-            <img src="{{foto.baseUrl}}"/>
+            <img src="{{foto.baseUrl}}" />
         </li>
         {% endfor %}
     </ul>
     <Input type="submit" value="Enviar">
-</form>
+</form> -->
+
+
+
+<div class="container">
+    <p class="text-justify mt-1">
+        <span class="font-weight-normal">Álbuns</span>
+        <span class="font-weight-bold"> > </span>
+        <span class="font-weight-bold">Seleção</span>
+        <span class="font-weight-bold"> > </span>
+        <span class="font-weight-normal">Configuração</span>
+        <span class="font-weight-bold"> > </span>
+    </p>
+
+    <h2 class="mt-sm-5 mt-3">Meus Álbuns</h2>
+    <p class="text-justify">
+        Selecione um álbum para configurar o seu slideshow.
+    </p>
+
+    <form action="{% url 'photos:configuracao' request.session.slideshow.codigo %}" method="POST"></form>
+    {% csrf_token %}
+    <div class="mt-sm-5 mt-3">
+        {% for foto in request.session.slideshow.album.fotos %}
+        <div class="card mb-3">
+
+            <!-- <h5 class="card-header">{{foto.filename}}</h5> -->
+
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-1 text-center">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1" checked name="{{forloop.counter}}" value="{{foto.id}}">
+                                <label class="custom-control-label" for="customCheck1"></label>
+                            </div>
+                        </div>
+                        <div class="col-3 text-center">
+                            <img src="{{foto.baseUrl}}" class="w-75 rounded" alt="..." for="customCheck1">
+                        </div>
+
+                        <div class="col-8">
+                            <p class="card-text">{{foto.mediaMetadata.width}} x {{foto.mediaMetadata.height}}</p>
+                            <p class="card-text">{{foto.mediaMetadata.creationTime}}</p>
+                            <a class="btn btn-primary" href="{% url 'photos:selecao' forloop.counter %}">SELECIONAR</a>
+                            <a class="btn btn-secondary" href="{{ foto.productUrl }}">GOOGLE PHOTOS</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    </form>
+</div>
+
 
 {% endblock %}

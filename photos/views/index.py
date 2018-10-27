@@ -49,10 +49,12 @@ def selecao(request, num_album):
 	if num_album < 1 or num_album > len(request.session['albuns']):
 		raise Http404("Album não não encontrado.")
 
-	# Obtém o número que será usado para identificar o slideshow
+	# Gera um número para identificar o slideshow configurado no momento.
 	slideshow_info = {'codigo': int(datetime.now().timestamp())}
 	slideshow_info['album'] = request.session['albuns'][num_album - 1]
+	slideshow_info['album']['numero'] = num_album
 
+	# Lista as mídias do album através da API do Google Photos.
 	session = googleauth.get_session(request.user)
 	response = session.request(
 					'POST', 
@@ -63,6 +65,7 @@ def selecao(request, num_album):
 					}
 				)
 
+	# Armazena os dados das fotos na sessão.
 	slideshow_info['album']['fotos'] = json.loads(response.text)['mediaItems']
 	request.session['slideshow'] = slideshow_info
 
@@ -73,17 +76,24 @@ def configuracao(request, slideshow_codigo):
 	slideshow_info = request.session['slideshow']
 	if not slideshow_codigo == slideshow_info['codigo']:
 		raise Http404("As fotos selecionadas não foram encontradas.")
+	
+	# Verifica se os indices das fotos foram enviados. 
+	if len(request.POST) != 0:
+		# Obtém os índices das fotos selecionadas na view de seleção.
+		index_fotos = list(request.POST)[1:]
+		fotos_selecionadas = []
+		fotos = slideshow_info['album']['fotos']
 
-	index_fotos = list(request.POST)[1:]
-	fotos_selecionadas = []
-	fotos = slideshow_info['album']['fotos']
+		for index in index_fotos:
+			fotos_selecionadas.append(fotos[int(index) - 1])
 
-	for index in index_fotos:
-		fotos_selecionadas.append(fotos[int(index) - 1])
+		#Armazena as informações das fotos na sessão. 
+		slideshow_info['fotos'] = fotos_selecionadas
+		request.session['slideshow'] = slideshow_info
 
-	slideshow_info['fotos'] = fotos_selecionadas
-	request.session['slideshow'] = slideshow_info
-	print('1 --> '+ str(request.session['slideshow']) + '\n\n')
+	# Se não foi enviado, verifica se existem fotos já selecionadas. 
+	elif 'fotos' not in slideshow_info:
+			raise Http404("As fotos selecionadas não foram encontradas.")
 
 	return render(request, 
 				'photos/configuracao.html',
@@ -100,15 +110,25 @@ def slideshow(request, slideshow_codigo):
 	if not slideshow_codigo == slideshow_info['codigo']:
 		raise Http404("As fotos selecionadas não foram encontradas.")
 
-	slideshow_info['formato'] = request.POST['formato']
-	slideshow_info['resolucao'] = request.POST['resolucao']
-	print('2 --> '+ str(request.session['slideshow']) + '\n\n')
+	# Verifica se as configurações de video foram enviados. 
+	if len(request.POST) != 0:
+		# Obtém as configurações do slideshow.
+		slideshow_info['conf'] = {}
+		slideshow_info['conf']['formato'] = request.POST['formato']
+		slideshow_info['conf']['resolucao'] = request.POST['resolucao']
+		slideshow_info['conf']['segundos_foto'] = int(request.POST['segundos_foto'])
+
+		request.session['slideshow'] = slideshow_info
+	# Se não, verifica se existe configuração já fornecida.	
+	elif 'conf' not in slideshow_info:
+		raise Http404("Nenhuma configuração de vídeo foi fornecida.")
+
 
 	path_album = '{path}/{user}/albuns/{id}'.format(path=PATH_IMAGENS, 
 													user=request.user, 
 													id=slideshow_info['album']['id'])
 	
-	#if not os.path.exists(path_album):
+	# Cria os diretórios do usuario se não existirem.
 	os.makedirs(path_album, exist_ok=True)
 
 	session = googleauth.get_session(request.user)
@@ -122,14 +142,16 @@ def slideshow(request, slideshow_codigo):
 							path_album, 
 							path_saida, 
 							video_filename = slideshow_info['codigo'], 
-							video_type = slideshow_info['formato'], 
-							std_dimension = slideshow_info['resolucao'],
+							video_type = slideshow_info['conf']['formato'], 
+							std_dimension = slideshow_info['conf']['resolucao'],
+							segundos_por_img = slideshow_info['conf']['segundos_foto'],
 							fotos_filename = [foto['filename'] for foto in slideshow_info['fotos']]
 					)
+
 	video_slideshow.criar()
 
 	return render(request, 'photos/slideshow.html', {
-				# Obtém apenas o caminho após  static/photos/data_users/
+				# Obtém o caminho do vídeo a partir da pasta 'static/photos/data_users/'
 				'path_video': video_slideshow.absolute_path.replace(PATH_IMAGENS, '')
 		   })
 

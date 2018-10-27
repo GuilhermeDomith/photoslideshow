@@ -31,7 +31,8 @@ class Slideshow():
     }
 
     def __init__(self, dir_fotos=None, dir_video=None, video_filename=None, 
-                    video_type='mp4', std_dimension='720p', fotos_filename=None):
+                    video_type='mp4', std_dimension='720p', fotos_filename=None,
+                    segundos_por_img=5):
         self.dir_fotos = dir_fotos
         self.video_filename = video_filename
         self.dir_video = dir_video
@@ -39,7 +40,7 @@ class Slideshow():
         self.absolute_path = '{path}/{file}.{ext}'.format(path=dir_video, file=video_filename,ext=video_type)
 
         self.fps = 24
-        self.segundos_por_img = 5
+        self.segundos_por_img = segundos_por_img
 
         self.video_type = video_type
         self.videowriter_type = Slideshow.VIDEO_TYPE[video_type]

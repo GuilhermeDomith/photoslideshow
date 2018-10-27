@@ -19,57 +19,59 @@
 
 
 
-<div class="container">
-    <p class="text-justify mt-1">
-        <span class="font-weight-normal">Álbuns</span>
-        <span class="font-weight-bold"> > </span>
-        <span class="font-weight-bold">Seleção</span>
-        <span class="font-weight-bold"> > </span>
-        <span class="font-weight-normal">Configuração</span>
-        <span class="font-weight-bold"> > </span>
-    </p>
+<div class="container pb-5">
 
-    <h2 class="mt-sm-5 mt-3">Meus Álbuns</h2>
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb bg-light">
+            <li class="breadcrumb-item">
+                <a href="{% url 'photos:index' %}">Álbuns</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Seleção</li>
+        </ol>
+    </nav>
+
+    <h2 class="mt-sm-5 mt-3">Álbum {{request.session.slideshow.album.title|title}}</h2>
     <p class="text-justify">
-        Selecione um álbum para configurar o seu slideshow.
+        Selecione as fotos que devem ser adicionadas ao seu slideshow.
     </p>
 
-    <form action="{% url 'photos:configuracao' request.session.slideshow.codigo %}" method="POST"></form>
-    {% csrf_token %}
-    <div class="mt-sm-5 mt-3">
-        {% for foto in request.session.slideshow.album.fotos %}
-        <div class="card mb-3">
+    <form action="{% url 'photos:configuracao' request.session.slideshow.codigo %}" method="POST">
+        {% csrf_token %}
+        <div class="mt-sm-5 mt-3">
+            {% for foto in request.session.slideshow.album.fotos %}
+            <div class="card mb-3">
 
-            <!-- <h5 class="card-header">{{foto.filename}}</h5> -->
-
-            <div class="card-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-1 text-center">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1" checked name="{{forloop.counter}}" value="{{foto.id}}">
-                                <label class="custom-control-label" for="customCheck1"></label>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-1 text-center">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="{{forloop.counter}}"
+                                        value="{{foto.id}}" checked>
+                                    <label class="custom-control-label" for="customCheck1"></label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-3 text-center">
-                            <img src="{{foto.baseUrl}}" class="w-75 rounded" alt="..." for="customCheck1">
-                        </div>
+                            <div class="col-3 text-center">
+                                <img src="{{foto.baseUrl}}" class="w-75 rounded" for="customCheck1">
+                            </div>
 
-                        <div class="col-8">
-                            <p class="card-text">{{foto.mediaMetadata.width}} x {{foto.mediaMetadata.height}}</p>
-                            <p class="card-text">{{foto.mediaMetadata.creationTime}}</p>
-                            <a class="btn btn-primary" href="{% url 'photos:selecao' forloop.counter %}">SELECIONAR</a>
-                            <a class="btn btn-secondary" href="{{ foto.productUrl }}">GOOGLE PHOTOS</a>
-                        </div>
+                            <div class="col-8">
+                                <p class="card-text">{{foto.mediaMetadata.width}} x {{foto.mediaMetadata.height}}</p>
+                                <p class="card-text">{{ foto.mediaMetadata.creationTime }}</p>
+                                <a class="btn btn-secondary btn-sm" href="{{ foto.productUrl }}">ABRIR NO GOOGLE PHOTOS</a>
+                            </div>
 
+                        </div>
                     </div>
-                </div>
 
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="text-center mt-5">
+                <button type="submit" class="btn btn-primary btn-lg w-25">Salvar</button>
             </div>
         </div>
-        {% endfor %}
-
-    </div>
     </form>
 </div>
 

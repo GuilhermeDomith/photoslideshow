@@ -2,15 +2,12 @@
 
 {% block main %}
 
-<div class="container">
-    <p class="text-justify mt-1">
-        <span class="font-weight-bold">Álbuns</span>
-        <span class="font-weight-bold"> > </span>
-        <span class="font-weight-normal">Seleção</span>
-        <span class="font-weight-bold"> > </span>
-        <span class="font-weight-normal">Configuração</span>
-        <span class="font-weight-bold"> > </span>
-    </p>
+<div class="container pb-3">
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb breadcrumb bg-light">
+            <li class="breadcrumb-item active" aria-current="page"> Álbuns </li>
+        </ol>
+    </nav>
 
     <h2 class="mt-sm-5 mt-3">Meus Álbuns</h2>
     <p class="text-justify">
@@ -18,10 +15,10 @@
     </p>
 
     <div class="mt-sm-5 mt-3">
-        {% for album in albuns%}
+        {% for album in albuns %}
         <div class="card mb-3">
 
-            <h5 class="card-header">{{album.title}}</h5>
+            <h5 class="card-header">{{album.title|title}}</h5>
 
             <div class="card-body">
                 <div class="container">

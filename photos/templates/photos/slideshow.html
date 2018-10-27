@@ -3,8 +3,29 @@
 
 {% block main %}
 
-<video width="400" controls>
-    <source src="{% static 'photos/data_users' %}{{path_video}}" type="video/mp4">
-</video>
+<div class="container pb-5">
+
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb breadcrumb bg-light">
+            <li class="breadcrumb-item">
+                <a href="{% url 'photos:index' %}">Álbuns</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'photos:selecao' request.session.slideshow.album.numero %}">Seleção</a>
+            </li>
+            <li class="breadcrumb-item" >
+                <a href="{% url 'photos:configuracao' request.session.slideshow.codigo %}">Configuração</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Slideshow</li>
+        </ol>
+    </nav>
+
+    <video width="400" controls>
+        <source src="{% static 'photos/data_users' %}{{path_video}}" type="video/mp4">
+    </video>
+
+    <a class="btn btn-primary" href="{% static 'photos/data_users' %}{{path_video}}" download="slideshow.mp4">Download</a>
+
+</div>
 
 {% endblock %}

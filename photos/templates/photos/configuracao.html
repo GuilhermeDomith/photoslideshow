@@ -3,38 +3,143 @@
 
 {% block main %}
 
-<form action="{% url 'photos:slideshow'  request.session.slideshow.codigo %}" method="POST">
-    {% csrf_token %}
-    <div>
-        {% for formato in formatos %}
-        <Label>
-            {% if formato == 'mp4' %}
-            <input type="radio" name="formato" value="{{formato}}" checked >
-            {% else %}
-            <input type="radio" name="formato" value="{{formato}}">
-            {% endif %}
-            {{formato}} 
-        </Label>
-        {% endfor %}
-    </div>
+<div class="container pb-5">
 
-    <div>
-        {% for resolucao in resolucoes %}
-        <Label>
-            {% if resolucao == '720p' %}
-            <input type="radio" name="resolucao" value="{{resolucao}}" checked>
-            {% else %}
-            <input type="radio" name="resolucao" value="{{resolucao}}">
-            {% endif %}
-            {{resolucao}} 
-        </Label>
-        {% endfor %}
-    </div>
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb breadcrumb bg-light">
+            <li class="breadcrumb-item">
+                <a href="{% url 'photos:index' %}">Álbuns</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'photos:selecao' request.session.slideshow.album.numero %}">Seleção</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Configuração</li>
+        </ol>
+    </nav>
 
-    <label> Tempo de exibição por foto (segundos)
-        <input type="number" name="fotos_por_segundo" value="5">
-    </label>
-    <Input type="submit" value="Salvar">
-</form>
+    <form action="{% url 'photos:slideshow'  request.session.slideshow.codigo %}" method="POST">
+        {% csrf_token %}
+        <div class="container">
+
+            <div class="row">
+                <!-- Titulo -->
+                <div class="col-12 p-2">
+                    <h2 class="mt-sm-5 mt-3">Configurações do Slideshow</h2>
+                    <p class="text-justify">
+                        Selecione as configurações desejadas para o seu slideshow.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Formatos de Vídeo -->
+                <div class="col-6 p-2">
+                    <div class="card h-100 w-100" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Formato</h5>
+                            {% for formato in formatos %}
+                            <div class="custom-control custom-radio custom-control-inline">
+
+                                {% if formato == 'mp4' %}
+                                <input checked type="radio" id="fmt_{{forloop.counter}}" name="formato" value="{{formato}}"
+                                    class="custom-control-input">
+                                {% else %}
+                                <input disabled type="radio" id="fmt_{{forloop.counter}}" name="formato" value="{{formato}}"
+                                    class="custom-control-input">
+                                {% endif %}
+
+                                <label class="custom-control-label" for="fmt_{{forloop.counter}}">{{formato}}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 p-2">
+                    <!-- Resoluções de Vídeo -->
+                    <div class="card h-100 w-100" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Resolução</h5>
+
+                            {% for resolucao in resolucoes %}
+                            <div class="custom-control custom-radio custom-control-inline">
+
+                                {% if resolucao == '720p' %}
+                                <input checked type="radio" id="res_{{forloop.counter}}" name="resolucao" value="{{resolucao}}"
+                                    class="custom-control-input">
+                                {% else %}
+                                <input type="radio" id="res_{{forloop.counter}}" name="resolucao" value="{{resolucao}}"
+                                    class="custom-control-input">
+                                {% endif %}
+
+                                <label class="custom-control-label" for="res_{{forloop.counter}}">{{resolucao}}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 p-2">
+                    <!-- Segundos de cada foto -->
+                    <div class="card h-100 w-100" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Exibição de Cada Foto</h5>
+                            <label for="segundos_foto"><span id="seg_span">5</span> Segundo(s)</label>
+                            <input type="range" id="segundos_foto" value="5" name="segundos_foto" class="custom-range"
+                                min="1" max="60" step="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <button type="submit" class="btn btn-primary btn-lg w-25">Salvar</button>
+            </div>
+        </div>
+    </form>
+
+    <!--<form action="{% url 'photos:slideshow'  request.session.slideshow.codigo %}" method="POST">
+        {% csrf_token %}
+        <div>
+            {% for formato in formatos %}
+            <Label>
+                {% if formato == 'mp4' %}
+                <input type="radio" name="formato" value="{{formato}}" checked>
+                {% else %}
+                <input type="radio" name="formato" value="{{formato}}" disabled>
+                {% endif %}
+                {{formato}}
+            </Label>
+            {% endfor %}
+        </div>
+
+        <div>
+            {% for resolucao in resolucoes %}
+            <Label>
+                {% if resolucao == '720p' %}
+                <input type="radio" name="resolucao" value="{{resolucao}}" checked>
+                {% else %}
+                <input type="radio" name="resolucao" value="{{resolucao}}">
+                {% endif %}
+                {{resolucao}}
+            </Label>
+            {% endfor %}
+        </div>
+
+        <label> Tempo de exibição por foto (segundos)
+            <input type="number" name="fotos_por_segundo" value="5">
+        </label>
+        <Input type="submit" value="Salvar">
+    </form>-->
+
+</div>
+
+<script>
+    $('#segundos_foto').on('input', (e) => {
+        $('#seg_span').text($('#segundos_foto').val())
+    });
+</script>
 
 {% endblock %}

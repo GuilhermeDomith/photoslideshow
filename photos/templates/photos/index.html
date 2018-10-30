@@ -9,7 +9,10 @@
         </ol>
     </nav>
 
-    <h2 class="mt-sm-5 mt-3">Meus Álbuns</h2>
+    <h2 class="mt-sm-5 mt-3 titulo-pagina">
+        <i class="far fa-address-book"></i>
+        Meus Álbuns
+    </h2>
     <p class="text-justify">
         Selecione um álbum para configurar o seu slideshow.
     </p>
@@ -27,9 +30,14 @@
                         <div class="col-9">
                             <p class="card-text font-weight-bold">{{album.mediaItemsCount}}
                                 foto{{album.mediaItemsCount|pluralize}}</p>
-                            <a class="btn btn-primary" href="{% url 'photos:selecao' forloop.counter %}">CRIAR
-                                SLIDESHOW</a>
-                            <a class="btn btn-secondary" href="{{ album.productUrl }}">GOOGLE PHOTOS</a>
+                            <a class="btn btn-primary" href="{% url 'photos:selecao' forloop.counter %}">
+                                <i class="fas fa-play"></i>
+                                CRIAR SLIDESHOW
+                            </a>
+                            <a class="btn btn-secondary" href="{{ album.productUrl }}">
+                                <i class="fas fa-external-link-alt"></i>
+                                GOOGLE PHOTOS
+                            </a>
                         </div>
 
                         <div class="col-3 text-center">

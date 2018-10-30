@@ -2,16 +2,66 @@
 
 
 {% block main %}
-  <h2>Criar Usuário</h2>
+<div class="container pb-3">
+
+  <h2 class="mt-sm-5 mt-3 titulo-pagina">
+    <i class="fas fa-user-plus"></i>
+    Cadastrar Usuário
+  </h2>
+
+  <div class="card mt-sm-5 mt-3 w-75" style="width: 18rem;">
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="card-body w-75 mx-auto">
+
+        <h4 class="card-title mt-3 mb-3">
+          <i id="icone-logo" class="fas fa-images"></i>
+          <span>Photo Slideshow</span>
+        </h4>
+
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" class="form-control" name="first_name" id="nome" placeholder="Nome">
+        </div>
+        <div class="form-group">
+          <label for="sobrenome">Sobrenome</label>
+          <input type="text" class="form-control" name="last_name" id="sobrenome" placeholder="Sobrenome">
+        </div>
+        <div class="form-group">
+          <h5>{{ form.email.errors }}</h5>
+          <label for="email">Email</label>
+          <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <h5>{{ form.username.errors }}</h5>
+          <label for="usuario">Usuário</label>
+          <input type="text" class="form-control" name="username" id="usuario" aria-describedby="usernameHelp"
+            placeholder="Nome de Usuário">
+          <small id="usernameHelp" class="form-text text-muted">O nome de usuário é único e será necessário para
+            acessar a
+            sua conta.</small>
+        </div>
+        <div class="form-group">
+          <h5>{{ form.password.errors }}</h5>
+          <label for="password">Senha</label>
+          <input type="password" name="password" class="form-control" id="password" placeholder="Senha">
+        </div>
+
+        <div class="text-right">
+          <button type="submit" class="btn btn-primary w-25" style="min-width: 60px;">Cadastrar</butt>
+        </div>
+      </div>
+    </form>
+  </div>
+
   <form action="" method="post">
     {% csrf_token %}
- 
-    Nome: <input type="text" name="first_name"> 
-    Sobrenome: <input type="text" name="last_name">
-    Nome de Usuário: <input type="text" name="username">
-    Email: <input type="text" name="email">
-    Senha: <input type="password" name="password">
+
+  {{ form.as_p }}
 
     <input type="submit" value="Cadastrar">
   </form>
+
+</div>
 {% endblock %}

@@ -13,19 +13,38 @@
             <li class="breadcrumb-item">
                 <a href="{% url 'photos:selecao' request.session.slideshow.album.numero %}">Seleção</a>
             </li>
-            <li class="breadcrumb-item" >
+            <li class="breadcrumb-item">
                 <a href="{% url 'photos:configuracao' request.session.slideshow.codigo %}">Configuração</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Slideshow</li>
         </ol>
     </nav>
+    <div class="container">
+        <div class="row">
+            <!-- Titulo -->
+            <div class="col-12 p-2">
+                <h2 class="mt-sm-5 mt-3 titulo-pagina">
+                    <i id="icone-logo" class="fas fa-images"></i>
+                    Slideshow
+                </h2>
+                <p class="text-justify">
+                    O seu slideshow foi criado! Você pode voltar no menu de navegação e alterar as configurações e fotos selecionadas se precisar.
+                </p>
+            </div>
+        </div>
 
-    <video width="400" controls>
-        <source src="{% static 'photos/data_users' %}{{path_video}}" type="video/mp4">
-    </video>
+        <div class="embed-responsive embed-responsive-21by9">
+            <video controls>
+                <source src="{% static 'photos/data_users' %}{{path_video}}" type="video/mp4">
+            </video>
+        </div>
 
-    <a class="btn btn-primary" href="{% static 'photos/data_users' %}{{path_video}}" download="slideshow.mp4">Download</a>
-
+        <div class="text-center mt-5">
+                <a class="btn btn-primary btn-lg w-25" 
+                    href="{% static 'photos/data_users' %}{{path_video}}" 
+                    download="slideshow.mp4">Download</a>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

@@ -1,19 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{% url 'photos:index' %}">Photo Slideshow</a>
+<nav id="navbar" class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand font-weight-bold" href="{% url 'photos:index' %}">
+        <i id="icone-logo" class="fas fa-images"></i>
+        <span>Photo Slideshow</span>
+    </a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" >
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
+            {% if user.is_autenticated %}
+            <li class="nav-item active">
                 <span class="nav-link">Olá, {{ user.username }}</span>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'usuario:logout' %}">Sair</a>
             </li>
+
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'usuario:login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'usuario:cadastro' %}">Cadastre-se</a>
+            </li>
+
+            {% endif %}
         </ul>
     </div>
 </nav>

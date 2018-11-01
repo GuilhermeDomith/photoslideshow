@@ -19,7 +19,7 @@
         Seleção
     </h2>
     <p class="text-justify">
-        Selecione as fotos que devem ser adicionadas ao seu slideshow.
+        Selecione até <strong>30 fotos</strong> para serem adicionadas ao seu slideshow.
     </p>
 
     <h3 class="mt-sm-5 mt-3 titulo-pagina">
@@ -29,29 +29,33 @@
     <form action="{% url 'photos:configuracao' request.session.slideshow.codigo %}" method="POST">
         {% csrf_token %}
         <div class="container mt-sm-5 mt-3">
+            <div class="d-flex flex-row-reverse">
+                <button id="btn-desmarcar" type="button" class="btn btn-primary btn-sm m-md-2 m-1">DESMARCAR TODAS</button>
+                <button id="btn-marcar" type="button" class="btn btn-primary btn-sm m-md-2 m-1">MARCAR MÁXIMO</button>
+            </div>
+
             <div class="row">
                 {% for foto in request.session.slideshow.album.fotos %}
-                <div class="col-md-6 mb-3">
+                <div class="col-md-6 mb-3"> 
 
                     <div class="card h-100">
                         <div class="card-body d-flex flex-wrap">
 
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="check_{{ forloop.counter }}"
-                                    name="{{forloop.counter}}" value="{{foto.id}}" checked>
+                                    name="{{forloop.counter}}" value="{{foto.id}}">
 
                                 <label class="custom-control-label" for="check_{{ forloop.counter }}">
                                     <div class="text-center">
-                                        <img src="{{foto.baseUrl}}" class="w-75 rounded" for="customCheck1">
+                                        <img src="{{foto.baseUrl}}" class="w-75 rounded">
                                     </div>
                                 </label>
                             </div>
 
 
                             <div class="d-flex flex-column mt-3">
-                                <p class="card-text  m-1 text-secondary">{{foto.mediaMetadata.width}} x
-                                    {{foto.mediaMetadata.height}}</p>
-                                <p id="data_criacao_{{forloop.counter}}" class="card-text  m-1 text-secondary">{{ foto.mediaMetadata.creationTime }}</p>
+                                <p class="card-text  m-1 text-secondary">{{foto.mediaMetadata.width}} x {{foto.mediaMetadata.height}}</p>
+                                <p id="data_criacao_{{forloop.counter}}" class="card-text  m-1 text-secondary">{{foto.mediaMetadata.creationTime }}</p>
                                 <a class="btn btn-secondary btn-sm m-1" href="{{ foto.productUrl }}" target="_blank">
                                     <i class="fas fa-external-link-alt"></i>
                                     GOOGLE PHOTOS
@@ -74,15 +78,38 @@
 
 {% block scripts %}
 <script>
-$(document).ready(function(){
-    for(let i=1; true ;i++){
-        p = $('#data_criacao_'+i)
+    $(document).ready(function () {
 
-        console.log(p)
-        if(p == null)
-            break
-    }
+        let maximo_check = 30
 
-})
+        $('#btn-marcar').on('click', function (e) {
+            $('input[type="checkbox"]').slice(0, maximo_check).each(function (i, elem) {
+                elem.checked = true
+            });
+        })
+
+        $('#btn-desmarcar').on('click', function (e) {
+            $("input:checked").each(function (i, elem) {
+                elem.checked = false
+            });
+        })
+
+        $('input[type="checkbox"]').change(function (e) {
+            if(this.checked == true)
+                if($("input:checked").length == maximo_check + 1)
+                    this.checked = false
+        });
+
+        // Converte a data de criação das fotos.
+        for (let i = 1; true; i++) {
+            p = $('#data_criacao_' + i)
+
+            d = new Date(p.html())
+            p.html(d.getDate()+'/'+d.getMonth()+'/'+d.getFullYear()+' - '+d.getHours()+':'+d.getMinutes())
+
+            if (p.length == 0)
+                break
+        }
+    })
 </script>
 {% endblock %}

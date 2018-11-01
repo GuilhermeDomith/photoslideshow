@@ -57,23 +57,23 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 
 @login_required
 def selecao(request, num_album):
-    if num_album < 1 or num_album > len(request.session['albuns']):
-        raise Http404("Album não não encontrado.")
+	if ('albuns' not in request.session) or (num_album < 1) or (num_album > len(request.session['albuns'])):
+		raise Http404("Album não não encontrado.")
 
-    # Gera um número para identificar o slideshow configurado no momento.
-    slideshow_info = {'codigo': int(datetime.now().timestamp())}
-    slideshow_info['album'] = request.session['albuns'][num_album - 1]
-    slideshow_info['album']['numero'] = num_album
+	# Gera um número para identificar o slideshow configurado no momento.
+	slideshow_info = {'codigo': int(datetime.now().timestamp())}
+	slideshow_info['album'] = request.session['albuns'][num_album - 1]
+	slideshow_info['album']['numero'] = num_album
 
-    # Lista as mídias do album através da API do Google Photos.
-    info_midias = download_info_midias_album(
-        request.user, slideshow_info['album']['id'])
+	# Lista as mídias do album através da API do Google Photos.
+	info_midias = download_info_midias_album(
+		request.user, slideshow_info['album']['id'])
 
-    # Armazena os dados das fotos na sessão.
-    slideshow_info['album']['fotos'] = info_midias
-    request.session['slideshow'] = slideshow_info
+	# Armazena os dados das fotos na sessão.
+	slideshow_info['album']['fotos'] = info_midias
+	request.session['slideshow'] = slideshow_info
 
-    return render(request, 'photos/selecao.html')
+	return render(request, 'photos/selecao.html')
 
 
 @login_required

@@ -17,41 +17,43 @@
         Selecione um álbum para configurar o seu slideshow.
     </p>
 
-    <div class="mt-sm-5 mt-3">
-        {% for album in albuns %}
-        <div class="card mb-3">
+    <div class="container mt-sm-5 mt-3">
+        <div class="row">
+            {% for album in albuns %}
+            <div class="col-md-6 mb-3">
+                <div class="card h-100">
 
-            <h5 class="card-header">{{album.title|title}}</h5>
+                    <h5 class="card-header">{{album.title|title}}</h5>
 
-            <div class="card-body">
-                <div class="container">
-                    <div class="row">
+                    <div class="card-body d-flex flex-wrap">
+                        <div class="text-center mx-auto">
+                            <img src="{{album.coverPhotoBaseUrl}}" class="rounded" style="height: auto; max-width: 220px; max-height: 210px" alt="...">
+                        </div>
 
-                        <div class="col-9">
-                            <p class="card-text font-weight-bold">{{album.mediaItemsCount}}
+                        <div class="d-flex flex-column">
+                            <p class="card-text font-weight-bold m-3">{{album.mediaItemsCount}}
                                 foto{{album.mediaItemsCount|pluralize}}</p>
-                            <a class="btn btn-primary" href="{% url 'photos:selecao' forloop.counter %}">
+
+                            <a class="btn btn-primary m-1" href="{% url 'photos:selecao' forloop.counter %}">
                                 <i class="fas fa-play"></i>
                                 CRIAR SLIDESHOW
                             </a>
-                            <a class="btn btn-secondary" href="{{ album.productUrl }}">
+
+                            <a class="btn btn-secondary m-1" href="{{ album.productUrl }}" target="_blank">
                                 <i class="fas fa-external-link-alt"></i>
                                 GOOGLE PHOTOS
                             </a>
                         </div>
 
-                        <div class="col-3 text-center">
-                            <img src="{{album.coverPhotoBaseUrl}}" class="w-75 rounded" alt="...">
-                        </div>
-
                     </div>
                 </div>
-
             </div>
-        </div>
-        {% endfor %}
 
+            {% endfor %}
+        </div>
     </div>
+
 </div>
+
 
 {% endblock %}

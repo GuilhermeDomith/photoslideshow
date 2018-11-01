@@ -48,6 +48,9 @@ class Slideshow():
         self.std_dimension = std_dimension
         self.dimensao = Slideshow.STD_DIMENSIONS[std_dimension]
 
+        self.fotos_inseridas = 0
+        self.terminado = False
+
 
     def _criar_video_writer(self):
          return cv2.VideoWriter(
@@ -65,23 +68,27 @@ class Slideshow():
             self.fotos_filename = os.listdir(self.dir_fotos)
 
         for file_name in self.fotos_filename:
-            path_foto = '{path}/{file}'.format(path=self.dir_fotos, file=file_name)
-            
-            ''' IMAGEM COM ESPAÇO NO NOME NÃO ESTÁ ABRINDO'''
-            img = cv2.imread(path_foto)
-            print(path_foto)
-            print(img)
+            try:
+                path_foto = '{path}/{file}'.format(path=self.dir_fotos, file=file_name)
+                self.fotos_inseridas += 1
 
-            if img is None: 
-                continue
+                ''' IMAGEM COM ESPAÇO NO NOME NÃO ESTÁ ABRINDO'''
+                img = cv2.imread(path_foto)
 
-            img_fundo = self._criar_fundo()
-            imagem = self._criar_imagem_slide(img_fundo, img)
+                if img is None: 
+                    continue
 
-            for _ in range(self.segundos_por_img * self.fps):
-                out.write(imagem)
+                img_fundo = self._criar_fundo()
+                imagem = self._criar_imagem_slide(img_fundo, img)
+
+                for _ in range(self.segundos_por_img * self.fps):
+                    out.write(imagem)
+            except:
+                print("ERRO: Erro ao abrir imagem '%s'"%file_name)
+
 
         out.release()
+        self.terminado = True
 
 
     def _criar_fundo(self, cor=255):

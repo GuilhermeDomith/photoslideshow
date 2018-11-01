@@ -28,28 +28,31 @@
 
     <form action="{% url 'photos:configuracao' request.session.slideshow.codigo %}" method="POST">
         {% csrf_token %}
-        <div class="mt-sm-5 mt-3">
-            {% for foto in request.session.slideshow.album.fotos %}
-            <div class="card mb-3">
+        <div class="container mt-sm-5 mt-3">
+            <div class="row">
+                {% for foto in request.session.slideshow.album.fotos %}
+                <div class="col-md-6 mb-3">
 
-                <div class="card-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-1 text-center">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="{{forloop.counter}}"
-                                        value="{{foto.id}}" checked>
-                                    <label class="custom-control-label" for="customCheck1"></label>
-                                </div>
-                            </div>
-                            <div class="col-3 text-center">
-                                <img src="{{foto.baseUrl}}" class="w-75 rounded" for="customCheck1">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-wrap">
+
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="check_{{ forloop.counter }}"
+                                    name="{{forloop.counter}}" value="{{foto.id}}" checked>
+
+                                <label class="custom-control-label" for="check_{{ forloop.counter }}">
+                                    <div class="text-center">
+                                        <img src="{{foto.baseUrl}}" class="w-75 rounded" for="customCheck1">
+                                    </div>
+                                </label>
                             </div>
 
-                            <div class="col-8">
-                                <p class="card-text">{{foto.mediaMetadata.width}} x {{foto.mediaMetadata.height}}</p>
-                                <p class="card-text">{{ foto.mediaMetadata.creationTime }}</p>
-                                <a class="btn btn-secondary btn-sm" href="{{ foto.productUrl }}">
+
+                            <div class="d-flex flex-column mt-3">
+                                <p class="card-text  m-1 text-secondary">{{foto.mediaMetadata.width}} x
+                                    {{foto.mediaMetadata.height}}</p>
+                                <p id="data_criacao_{{forloop.counter}}" class="card-text  m-1 text-secondary">{{ foto.mediaMetadata.creationTime }}</p>
+                                <a class="btn btn-secondary btn-sm m-1" href="{{ foto.productUrl }}" target="_blank">
                                     <i class="fas fa-external-link-alt"></i>
                                     GOOGLE PHOTOS
                                 </a>
@@ -57,17 +60,29 @@
 
                         </div>
                     </div>
-
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-
             <div class="text-center mt-5">
-                <button type="submit" class="btn btn-primary btn-lg w-25">Salvar</button>
+                <button type="submit" class="btn btn-primary btn-lg w-25" style="min-width: 100px;">Salvar</button>
             </div>
         </div>
     </form>
 </div>
 
+{% endblock %}
 
+{% block scripts %}
+<script>
+$(document).ready(function(){
+    for(let i=1; true ;i++){
+        p = $('#data_criacao_'+i)
+
+        console.log(p)
+        if(p == null)
+            break
+    }
+
+})
+</script>
 {% endblock %}

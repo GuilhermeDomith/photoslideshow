@@ -23,7 +23,4 @@ urlpatterns = [
     path('usuario/', include('usuario.urls')),
     # nescessário para o login.
     path('auth/', include('social_django.urls', namespace='social'))
-
-    ##url('login/', views.LoginView.as_view(), name='login'),
-    #url('logout/', views.auth_logout, name='logout'),
 ]

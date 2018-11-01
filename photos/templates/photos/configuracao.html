@@ -97,52 +97,14 @@
                 </div>
             </div>
 
-            <div class="text-center mt-5">
-                <button type="submit" class="btn btn-primary btn-lg w-25">Salvar</button>
+            <div class="text-center mt-5" >
+                <button type="submit" class="btn btn-primary btn-lg w-25" style="min-width: 100px;">Salvar</button>
             </div>
         </div>
     </form>
-
-    <!--<form action="{% url 'photos:slideshow'  request.session.slideshow.codigo %}" method="POST">
-        {% csrf_token %}
-        <div>
-            {% for formato in formatos %}
-            <Label>
-                {% if formato == 'mp4' %}
-                <input type="radio" name="formato" value="{{formato}}" checked>
-                {% else %}
-                <input type="radio" name="formato" value="{{formato}}" disabled>
-                {% endif %}
-                {{formato}}
-            </Label>
-            {% endfor %}
-        </div>
-
-        <div>
-            {% for resolucao in resolucoes %}
-            <Label>
-                {% if resolucao == '720p' %}
-                <input type="radio" name="resolucao" value="{{resolucao}}" checked>
-                {% else %}
-                <input type="radio" name="resolucao" value="{{resolucao}}">
-                {% endif %}
-                {{resolucao}}
-            </Label>
-            {% endfor %}
-        </div>
-
-        <label> Tempo de exibição por foto (segundos)
-            <input type="number" name="fotos_por_segundo" value="5">
-        </label>
-        <Input type="submit" value="Salvar">
-    </form>-->
-
 </div>
+{% endblock %}
 
-<script>
-    $('#segundos_foto').on('input', (e) => {
-        $('#seg_span').text($('#segundos_foto').val())
-    });
-</script>
-
+{% block scripts %}
+<script src="{% static 'photos/js/configuracao.js'%}"></script>
 {% endblock %}

@@ -17,7 +17,8 @@ _sessions = {}
 _flow = Flow.from_client_secrets_file(
     settings.GOOGLE_CLIENTE_CREDENTIALS_JSON,
     scopes=['https://www.googleapis.com/auth/photoslibrary.readonly'],
-    redirect_uri='http://localhost:8000/usuario/return_auth'
+    redirect_uri='http://localhost:8000/usuario/return_auth',
+
 )
 
 @login_required
@@ -30,8 +31,16 @@ def return_auth(request):
     '''
     global session
 
+    if 'error' in request.GET or 'code' not in request.GET:
+        return HttpResponseRedirect(reverse('usuario:permissao'))
+
     _flow.fetch_token(code=request.GET['code'])
     credentials = _flow.credentials
+
+    print('retorno')
+    print(request.GET['code'])
+    print(_flow)
+    print(credentials)
 
     model = CredentialsModel()
     model.refresh_token = credentials.refresh_token
@@ -43,11 +52,24 @@ def return_auth(request):
     return HttpResponseRedirect(reverse('photos:index'))
 
 @login_required
-def auth_photos(request):
+def permissao(request):
     '''
       Verifica se existe credencial salva para o usuário logado. Caso exista 
       redireciona para a página inicial da aplicação, se não, redireciona para a 
-      página do google em que o usuário deve autorizar o acesso ao google photos.
+      página que informa a necessidade da permissão.
+    '''
+    if get_session(request.user) == None:
+        return render(request, 'auth/permissao.html')
+    
+    return HttpResponseRedirect(reverse('photos:index'))
+
+
+@login_required
+def auth_photos(request):
+    '''
+    Redireciona para a página do google em que o usuário deve autorizar o acesso 
+    ao google photos. Se já existe credencial para o usuário logado redireciona para a 
+    página inicial.
     '''
     if get_session(request.user) == None:
         auth_url, _ = _flow.authorization_url(prompt='consent')

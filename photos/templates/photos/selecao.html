@@ -19,7 +19,7 @@
         Seleção
     </h2>
     <p class="text-justify">
-        Selecione até <strong>30 fotos</strong> para serem adicionadas ao seu slideshow.
+        Selecione até <strong id="maximo_fotos">{{maximo_fotos}} fotos</strong> para serem adicionadas ao seu slideshow.
     </p>
 
     <h3 class="mt-sm-5 mt-3 titulo-pagina">
@@ -68,7 +68,7 @@
                 {% endfor %}
             </div>
             <div class="text-center mt-5">
-                <button type="submit" class="btn btn-primary btn-lg w-25" style="min-width: 100px;">Salvar</button>
+                <button id="salvar" type="submit" class="btn btn-primary btn-lg w-25" style="min-width: 100px;">Salvar</button>
             </div>
         </div>
     </form>
@@ -80,7 +80,7 @@
 <script>
     $(document).ready(function () {
 
-        let maximo_check = 30
+        let maximo_check = parseInt($('#maximo_fotos').html());
 
         $('#btn-marcar').on('click', function (e) {
             $('input[type="checkbox"]').slice(0, maximo_check).each(function (i, elem) {
@@ -110,6 +110,11 @@
             if (p.length == 0)
                 break
         }
+
+        $('#salvar').click((e) => {
+            if($("input:checked").length == 0)
+                e.preventDefault();
+        })
     })
 </script>
 {% endblock %}

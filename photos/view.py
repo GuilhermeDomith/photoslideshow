@@ -16,49 +16,50 @@ URL_LISTAR_MIDIAS = 'https://photoslibrary.googleapis.com/v1/mediaItems:search'
 LONG_PATH_DATA_USERS = settings.BASE_DIR + '/photos/static/photos/data_users'
 SHORT_PATH_DATA_USERS = '/static/photos/data_users'
 
-# Armazena o progresso de cada slideshow sendo criado.
+# Armazenará o progresso de cada slideshow sendo criado.
 STATUS_VIDEOS = {}
 # Numero de fotos permitidas em cada slideshow.
 MAX_FOTOS = 30
 
 
 class IndexView(LoginRequiredMixin, generic.ListView):
-    template_name = 'photos/index.html'
-    context_object_name = 'albuns'
-    ''' Opcional
+	template_name = 'photos/index.html'
+	context_object_name = 'albuns'
+	''' Opcional
 	login_url = '/login/'
 	redirect_field_name = 'redirect_to'
 	'''
 
-    def get_queryset(self):
-        """
-        Obtém os albuns a serem listados na página.
-        """
+	def get_queryset(self):
+		""" Obtém os albuns a serem listados na página. """
 
-        ''' Retirar apos termino '''
-        if 'albuns' not in self.request.session:
-            albuns = self.session_photos.get(URL_LISTAR_ALBUMS)
-            self.request.session['albuns'] = albuns.json()['albums']
+		albuns = self.session_photos.get(URL_LISTAR_ALBUMS)
+		self.request.session['albuns'] = albuns.json()['albums']
 
-        return self.request.session['albuns']
+		return self.request.session['albuns']
+		
 
-    def get(self, request, *args, **kwargs):
-        """
-        Verifica se usuário já autorizou o acesso ao google photos, senão redireciona
-        para a página de autorização.
-        """
-        self.session_photos = googleauth.get_session(request.user)
+	def get(self, request, *args, **kwargs):
+		"""
+		Verifica se usuário já autorizou o acesso ao google photos, senão redireciona
+		para a página de autorização.
+		"""
+		self.session_photos = googleauth.get_session(request.user)
 
-        if not self.session_photos:
-            return HttpResponseRedirect(reverse('usuario:auth_photos'))
-        else:
-            return super().get(self, request, *args, **kwargs)
+		if not self.session_photos:
+			return HttpResponseRedirect(reverse('usuario:permissao'))
+		else:
+			return super().get(self, request, *args, **kwargs)
 
 
 @login_required
 def selecao(request, num_album):
-	if ('albuns' not in request.session) or (num_album < 1) or (num_album > len(request.session['albuns'])):
-		raise Http404("Album não não encontrado.")
+	try:
+		if (num_album < 1) or (num_album > len(request.session['albuns'])):
+			raise Exception
+	except:
+		raise Http404("O álbum não foi encontrado.")
+		
 
 	# Gera um número para identificar o slideshow configurado no momento.
 	slideshow_info = {'codigo': int(datetime.now().timestamp())}
@@ -73,62 +74,44 @@ def selecao(request, num_album):
 	slideshow_info['album']['fotos'] = info_midias
 	request.session['slideshow'] = slideshow_info
 
-	return render(request, 'photos/selecao.html')
+	return render(request, 'photos/selecao.html', {'maximo_fotos': MAX_FOTOS})
 
 
 @login_required
 def configuracao(request, slideshow_codigo):
-    slideshow_info = request.session['slideshow']
-    if not slideshow_codigo == slideshow_info['codigo']:
-        raise Http404("As fotos selecionadas não foram encontradas.")
+	slideshow_info = obter_slideshow_info(request, slideshow_codigo)
 
-    # Verifica se os indices das fotos foram enviados.
-    if len(request.POST) != 0:
-        # Obtém os índices das fotos selecionadas na view de seleção.
-        index_fotos = list(request.POST)[1:]
-        fotos_selecionadas = []
-        fotos = slideshow_info['album']['fotos']
+	# Verifica se os indices das fotos foram enviados.
+	if len(request.POST) != 0:
+		# Obtém os índices das fotos selecionadas na view de seleção.
+		index_fotos = list(request.POST)[1:]
+		fotos_selecionadas = []
+		fotos = slideshow_info['album']['fotos']
 
 		# Obtém as fotos que o usuario escolheu, tendo um limite caso seja enviado mais.
-        for index in index_fotos[:MAX_FOTOS]:
-            fotos_selecionadas.append(fotos[int(index) - 1])
+		for index in index_fotos[:MAX_FOTOS]:
+			fotos_selecionadas.append(fotos[int(index) - 1])
 
-        # Armazena as informações das fotos na sessão.
-        slideshow_info['fotos'] = fotos_selecionadas
-        request.session['slideshow'] = slideshow_info
+		# Armazena as informações das fotos na sessão.
+		slideshow_info['fotos'] = fotos_selecionadas
+		request.session['slideshow'] = slideshow_info
 
-    # Se não foi enviado, verifica se existem fotos já selecionadas.
-    elif 'fotos' not in slideshow_info:
-        raise Http404("As fotos selecionadas não foram encontradas.")
+	# Se não foi enviado, verifica se existem fotos já selecionadas.
+	elif 'fotos' not in slideshow_info:
+		raise Http404("As fotos selecionadas não foram encontradas.")
 
-    return render(request,
-                  'photos/configuracao.html',
-                  {
-                      'formatos': Slideshow.VIDEO_TYPE.keys(),
-                      'resolucoes': Slideshow.STD_DIMENSIONS.keys()
-            })
+	return render(request,
+					'photos/configuracao.html',
+					{
+						'formatos': Slideshow.VIDEO_TYPE.keys(),
+						'resolucoes': Slideshow.STD_DIMENSIONS.keys()
+			})
 
 
 @login_required
 def slideshow(request, slideshow_codigo):
-
-	slideshow_info = request.session['slideshow']
-	if not slideshow_codigo == slideshow_info['codigo']:
-		raise Http404("As fotos selecionadas não foram encontradas.")
-
-	# Verifica se as configurações de video foram enviados.
-	if len(request.POST) != 0:
-		# Obtém as configurações do slideshow.
-		slideshow_info['conf'] = {}
-		slideshow_info['conf']['formato'] = request.POST['formato']
-		slideshow_info['conf']['resolucao'] = request.POST['resolucao']
-		slideshow_info['conf']['segundos_foto'] = int(
-			request.POST['segundos_foto'])
-
-		request.session['slideshow'] = slideshow_info
-	# Se não, verifica se existe configuração já fornecida.
-	elif 'conf' not in slideshow_info:
-		raise Http404("Nenhuma configuração de vídeo foi fornecida.")
+	slideshow_info = obter_slideshow_info(request, slideshow_codigo)
+	slideshow_info['conf'] = obter_configuracoes_enviadas(request, slideshow_info)
 
 	path_album = '{path}/{user}/albuns/{id}'.format(path=LONG_PATH_DATA_USERS,
                                                     user=request.user,
@@ -169,6 +152,38 @@ def check_progress(request, slideshow_codigo):
 			del STATUS_VIDEOS[chave]
 
 		return HttpResponse(json.dumps(status_video))
+
+
+def obter_slideshow_info(request, codigo):
+	try:
+		slideshow_info = request.session['slideshow']
+		if codigo == slideshow_info['codigo']:
+			return slideshow_info
+		else:
+			raise Http404("Nenhuma foto foi selecionada.")
+	except KeyError:
+		raise Http404("Nenhum álbum foi selecionado.")
+	
+
+def obter_configuracoes_enviadas(request, slideshow_info):
+	# Verifica se as configurações de video foram enviados.
+	# Se não, utiliza configurações anteriores, se houverem.
+	if len(request.POST) > 0:
+		try:
+			# Obtém as configurações do slideshow.
+			conf = {}
+			conf['formato'] = request.POST['formato']
+			conf['resolucao'] = request.POST['resolucao']
+			conf['segundos_foto'] = int(request.POST['segundos_foto'])
+
+			return conf
+		except:
+			raise Http404("As configurações de vídeo enviadas não são válidas.")
+	else:
+		try:
+			return slideshow_info['conf']
+		except KeyError:
+			raise Http404("Nenhuma configuração de vídeo foi fornecida.")
 
 
 
@@ -212,7 +227,6 @@ def download_info_midias_album(user=None, id_album=None):
 		else:
 			break
 
-	print('\n\n->Nume de midias:  ', len(info_midias))
 	return info_midias
 
 

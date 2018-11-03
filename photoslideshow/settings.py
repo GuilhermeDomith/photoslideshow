@@ -32,7 +32,10 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'l3oKqbH2bos942LxQG'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    #'192.168.0.17'
+]
 
 
 # Application definition
@@ -94,7 +97,7 @@ WSGI_APPLICATION = 'photoslideshow.wsgi.application'
 '''
 
 LOGIN_URL = '/usuario/login'
-LOGIN_REDIRECT_URL = '/usuario/auth_photos'
+LOGIN_REDIRECT_URL = '/usuario/permissao'
 LOGOUT_REDIRECT_URL = '/usuario/login'
 
 # Database

@@ -20,23 +20,3 @@ class CredentialsModel(models.Model):
               client_id = self.client_id,
               client_secret = self.client_secret
             )
-
-'''
-class CredentialsAdmin(admin.ModelAdmin):
-    pass
-'''
-
-
-'''
-from oauth2client.contrib.django_orm import CredentialsField
-from google.
-
-
-class CredentialsModel(models.Model):
-  id = models.ForeignKey(User, primary_key=True)
-  credential = CredentialsField()
-
-
-class CredentialsAdmin(admin.ModelAdmin):
-    pass
-'''

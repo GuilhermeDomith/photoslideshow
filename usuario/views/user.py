@@ -19,8 +19,3 @@ class UserCreate(CreateView):
 
         # return HttpResponseRedirect(self.get_success_url())
         return HttpResponseRedirect(reverse('usuario:login'))
-
-'''
-def criar_usuario(request):
-    print(request.)
-'''

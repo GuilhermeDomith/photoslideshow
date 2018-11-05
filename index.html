@@ -1,14 +1,229 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Projeto Acadêmico Photo Slideshow</title>
-</head>
-<body>
+<html class="no-js">
 
-    <h1>Photo Slideshow</h1>
-    
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Photo Slideshow</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/ico">
+
+    <!-- Fonts -->
+    <!-- Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400i|Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700" rel="stylesheet">
+
+    <!-- CSS -->
+
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
+        integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="css/themefisher-fonts.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Responsive Stylesheet -->
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body id="body">
+
+    <!-- 
+	    Header start
+	    ==================== -->
+    <div class="container">
+        <nav class="navbar navigation " id="top-nav">
+            <a class="navbar-brand logo" href="#">
+                <h1>Photo Slideshow</h1>
+            </a>
+
+            <button class="navbar-toggler hidden-lg-up float-lg-right" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <i class="tf-ion-android-menu"></i>
+            </button>
+            <div class="collapse navbar-toggleable-md" id="navbarResponsive">
+                <ul class="nav navbar-nav menu float-lg-right" id="top-nav">
+                    <li class=" active">
+                        <a href="#home">HOME</a>
+                    </li>
+                    <li class="">
+                        <a href="#funcionamento">FUNCIONAMENTO</a>
+                    </li>
+                    <li class="">
+                        <a href="#instalacao">INSTALACAO</a>
+                    </li>
+                    <li class="">
+                        <a href="#contact">CONTATO</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+
+    <section id="home" class="hero-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <!--<img src="images/watch.png" alt="">-->
+                </div>
+                <div class="col-md-6">
+                    <div class="block">
+                        <h1 class="">Photo Slideshow</h1>
+                        <p>Trabalho desenvolvido para a disciplina Webservices do curso de Tecnologia em Sistemas pra
+                            Internet.
+                            A proposta do trabalho é consumir uma API com o intuito de criar uma ferramenta com
+                            recursos
+                            e funcionalidades que vão além do simples consumo e exibição de dados consumidos.
+                        </p><br>
+                        <p>
+                            Para este trabalho foi utilizado a <strong>API do Google Photos</strong>,
+                            permitindo ao usuário criar um slideshow a partir de suas fotos armazenadas no
+                            serviço disponibilizado pela Google.
+                        </p>
+                        <!-- <a class="btn btn-main" href="#about" role="button">Abrir Aplicação</a> -->
+                    </div>
+                </div>
+            </div><!-- .row close -->
+        </div><!-- .container close -->
+    </section><!-- header close -->
+
+
+    <!-- 
+        Funcionamento da aplicação
+        ==================== -->
+    <section id="funcionamento" class="feature section">
+        <div class="container">
+            <div class="row">
+                <div class="heading">
+                    <h2>Funcionamento</h2>
+                </div>
+                <div class="col-md-6">
+                    <div class="feature-box">
+                        <div class="step-number">1</div>
+                        <h4>Login</h4>
+                        <p>Criar uma conta no Photo Slideshow e logar com o nome de usuario de senha.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="step-number">2</div>
+                        <h4>Autorização</h4>
+                        <p>Autorizar o acesso às fotos armazenadas no Google Photos.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="step-number">3</div>
+                        <h4>Álbuns</h4>
+                        <p>Escolher um álbum para dar início a criação de um slideshow.</p>
+                    </div>
+                </div>
+                <!--<div class="col-md-4 text-center">
+                    <img src="images/watch-2.png" alt="">
+                </div>-->
+                <div class="col-md-6">
+                    <div class="feature-box">
+                        <div class="step-number">4</div>
+                        <h4>Seleção</h4>
+                        <p>Selecionar as fotos do álbum que serão utilizadas.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="step-number">5</div>
+                        <h4>Configuração</h4>
+                        <p>Escolher o formato, resolução, e segundos em que cada imagem deve ser exibida no slideshow.
+                        </p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="step-number">6</div>
+                        <h4>Pronto</h4>
+                        <p>O slideshow será criado dentro de alguns minutos.</p>
+                    </div>
+                </div>
+            </div>
+        </div><!-- .container close -->
+    </section><!-- #service close -->
+
+    <!-- 
+        Instalação
+        ==================== -->
+    <section id="instalacao" class="feature section">
+        <div class="container">
+            <div class="row">
+                <div class="heading">
+                    <h2>Instalação</h2>
+                </div>
+                <div class="col-md-8">
+                    <p> Para executar a aplicação localmente é necessário o <code>Python 3</code>.</p> <br>
+                    <p> Também, o framework <code>Django 2.1</code> e a biblioteca <code>google-auth</code> 
+                        devem ser instalados.</p>
+                    <p> Ambos podem ser instalados a partir do pip.</p> <br>
+                    <blockquote class="blockquote">
+                        <p>$ pip install django</p>
+                        <p>$ pip install google-auth</p>
+                    </blockquote>
+
+                    <p> Fazer as migrações necessárias do projeto.</p><br>
+                    <blockquote class="blockquote">
+                        <p>$ python manage.py migrate</p>
+                    </blockquote>
+
+                    <p> Executar o servidor de desenvolvimento do Django.</p><br>
+                    <blockquote class="blockquote">
+                        <p>$ python manage.py runserver 8000</p>
+                    </blockquote>
+
+                    <p> A aplicação já pode ser acessada pelo endereço.</p><br>
+                    <blockquote class="blockquote">
+                        <p>localhost:8000/photos/index</p>
+                    </blockquote>
+
+                </div>
+            </div>
+        </div><!-- .container close -->
+    </section><!-- #service close -->
+
+
+
+    <footer>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="block">
+                        <a href="" class="footer-logo">Photo Slideshow</a>
+                        <ul class="menu">
+                            <li class=" active">
+                                <a href="#home">HOME</a>
+                            </li>
+                            <li class="">
+                                <a href="#funcionamento">FUNCIONAMENTO</a>
+                            </li>
+                            <li class="">
+                                <a href="#instalacao">INSTALACAO</a>
+                            </li>
+                            <li class="">
+                                <a href="#contact">CONTATO</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Js -->
+    <script src="js/vendor/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK"
+        crossorigin="anonymous"></script>
+    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/main.js"></script>
+
 </body>
+
 </html>

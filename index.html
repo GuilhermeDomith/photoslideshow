@@ -13,8 +13,9 @@
     <!-- Fonts -->
     <!-- Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400i|Source+Sans+Pro:300,400,600,700" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
+        crossorigin="anonymous">
 
     <!-- CSS -->
 
@@ -40,7 +41,8 @@
     <div class="container">
         <nav class="navbar navigation " id="top-nav">
             <a class="navbar-brand logo" href="#">
-                <h1>Photo Slideshow</h1>
+                <i id="icone-logo" class="fas fa-images" style="float: left;"></i>
+                <span>Photo Slideshow</span>
             </a>
 
             <button class="navbar-toggler hidden-lg-up float-lg-right" type="button" data-toggle="collapse" data-target="#navbarResponsive">
@@ -69,13 +71,16 @@
     <section id="home" class="hero-area">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 text-center">
+                <div class="col-md-5 text-center">
                     <!--<img src="images/watch.png" alt="">-->
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <div class="block">
-                        <h1 class="">Photo Slideshow</h1>
-                        <p>Trabalho desenvolvido para a disciplina Webservices do curso de Tecnologia em Sistemas pra
+                        <h1 class="">
+                            <i id="icone-logo" class="fas fa-images"></i>
+                            <span>Photo Slideshow</span>
+                        </h1>
+                        <p>Trabalho desenvolvido para a disciplina Webservices do curso Tecnologia em Sistemas para
                             Internet.
                             A proposta do trabalho é consumir uma API com o intuito de criar uma ferramenta com
                             recursos
@@ -107,7 +112,7 @@
                     <div class="feature-box">
                         <div class="step-number">1</div>
                         <h4>Login</h4>
-                        <p>Criar uma conta no Photo Slideshow e logar com o nome de usuario de senha.</p>
+                        <p>Criar uma conta no Photo Slideshow e logar com o nome de usuario e senha.</p>
                     </div>
                     <div class="feature-box">
                         <div class="step-number">2</div>
@@ -156,7 +161,7 @@
                 </div>
                 <div class="col-md-8">
                     <p> Para executar a aplicação localmente é necessário o <code>Python 3</code>.</p> <br>
-                    <p> Também, o framework <code>Django 2.1</code> e a biblioteca <code>google-auth</code> 
+                    <p> Também, o framework <code>Django 2.1</code> e a biblioteca <code>google-auth</code>
                         devem ser instalados.</p>
                     <p> Ambos podem ser instalados a partir do pip.</p> <br>
                     <blockquote class="blockquote">
@@ -190,23 +195,32 @@
         <div class="container text-center">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="block">
-                        <a href="" class="footer-logo">Photo Slideshow</a>
-                        <ul class="menu">
-                            <li class=" active">
-                                <a href="#home">HOME</a>
-                            </li>
-                            <li class="">
-                                <a href="#funcionamento">FUNCIONAMENTO</a>
-                            </li>
-                            <li class="">
-                                <a href="#instalacao">INSTALACAO</a>
-                            </li>
-                            <li class="">
-                                <a href="#contact">CONTATO</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="menu">
+                        <li class=" active">
+                            <a href="#home">HOME</a>
+                        </li>
+                        <li class="">
+                            <a href="#funcionamento">FUNCIONAMENTO</a>
+                        </li>
+                        <li class="">
+                            <a href="#instalacao">INSTALACAO</a>
+                        </li>
+                        <li class="">
+                            <a href="#contact">CONTATO</a>
+                        </li>
+                    </ul>
+
+                    <nav class="nav" style="margin: 30px 0 10px">
+                        <a href="http://github.com/guilhermedomith" class="nav-link" target="_blank" style="font-size: 1.5rem; margin-right: 30px;">
+                            <i class="fab fa-github"></i>
+                        </a>
+
+                        <a href="http://www.linkedin.com/in/guilhermedomith/" class="nav-link" target="_blank" style="font-size: 1.5rem">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </nav>
+
+                    <p class="text-center"> Criado por Guilherme Domith </p>
                 </div>
             </div>
         </div>

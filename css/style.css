@@ -51,6 +51,14 @@ a {
   -o-transition: all 0.2s ease-in-out 0s;
   transition: all 0.2s ease-in-out 0s; }
 
+#icone-logo{
+  color: #303F9F;
+}
+
+#icone-logo+span{
+  color: #03A9F4;
+  margin-left: 5px;
+}
 
 .step-number{
   background-color: rgb(67, 67, 255);
@@ -167,7 +175,7 @@ a:active {
   justify-content: center;
   align-items: center; }
   .hero-area h1 {
-    font-size: 60px;
+    font-size: 50px;
     font-weight: bold;
     padding-bottom: 19px;
     margin-top: 30px;
@@ -198,14 +206,6 @@ a:active {
     float: right; }
     .navigation .navbar-toggler i {
       font-size: 22px; }
-
-.logo {
-  display: inline-block; }
-  .logo h1 {
-    color: #444;
-    font-size: 25px;
-    margin: 0;
-    line-height: 1; }
 
 .menu {
   margin-top: 14px; }

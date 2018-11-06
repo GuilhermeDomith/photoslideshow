@@ -13,7 +13,13 @@
         <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
             <li class="nav-item active">
-                <span class="nav-link">Olá, {{ user.username }}</span>
+                <span class="nav-link">
+                {% if user.first_name %}
+                    Olá, {{ user.first_name }}
+                {% else %}
+                    Olá, {{ user.username }}
+                {% endif %}
+                </span>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'usuario:logout' %}">Sair</a>

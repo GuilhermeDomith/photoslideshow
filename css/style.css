@@ -51,6 +51,10 @@ a {
   -o-transition: all 0.2s ease-in-out 0s;
   transition: all 0.2s ease-in-out 0s; }
 
+.video{
+  box-shadow: 0 15px 40px rgba(0,0,0, 0.5);
+}
+
 #icone-logo{
   color: #303F9F;
 }

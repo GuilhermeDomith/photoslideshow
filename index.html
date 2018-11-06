@@ -57,7 +57,7 @@
                         <a href="#funcionamento">FUNCIONAMENTO</a>
                     </li>
                     <li class="">
-                        <a href="#instalacao">INSTALACAO</a>
+                        <a href="#instalacao">INSTALAÇÃO</a>
                     </li>
                     <li class="">
                         <a href="#contact">CONTATO</a>
@@ -72,9 +72,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-5 text-center">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://youtu.be/4bjp_Ea5LSk"
-                            allowfullscreen></iframe>
+                    <div class="embed-responsive embed-responsive-16by9  video">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/4bjp_Ea5LSk?autoplay=1"
+                             frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="col-md-7">
@@ -128,9 +128,6 @@
                         <p>Escolher um álbum para dar início a criação de um slideshow.</p>
                     </div>
                 </div>
-                <!--<div class="col-md-4 text-center">
-                    <img src="images/watch-2.png" alt="">
-                </div>-->
                 <div class="col-md-6">
                     <div class="feature-box">
                         <div class="step-number">4</div>
@@ -149,6 +146,11 @@
                         <p>O slideshow será criado dentro de alguns minutos.</p>
                     </div>
                 </div>
+                <div class="col-md-12 text-center">
+                        <div class="embed-responsive embed-responsive-16by9 video">
+                            <video  class="embed-responsive-item" autoplay loop src="video/funcionamento.mp4"></video>
+                        </div>
+                </div>
             </div>
         </div><!-- .container close -->
     </section><!-- #service close -->
@@ -164,12 +166,13 @@
                 </div>
                 <div class="col-md-8">
                     <p> Para executar a aplicação localmente é necessário o <code>Python 3</code>.</p> <br>
-                    <p> Também, o framework <code>Django 2.1</code> e a biblioteca <code>google-auth</code>
-                        devem ser instalados.</p>
-                    <p> Ambos podem ser instalados a partir do pip.</p> <br>
+                    <p> Também, o framework <code>Django 2.1</code> e as biblioteca <code>google-auth</code> e 
+                        <code>OpenCV</code> devem ser instaladas.</p>
+                    <p> Todos podem ser instalados a partir do pip.</p> <br>
                     <blockquote class="blockquote">
                         <p>$ pip install django</p>
                         <p>$ pip install google-auth</p>
+                        <p>$ pip install opencv-python</p>
                     </blockquote>
 
                     <p> Fazer as migrações necessárias do projeto.</p><br>
@@ -195,7 +198,7 @@
 
 
     <footer>
-        <div class="container text-center">
+        <div id="contact" class="container text-center">
             <div class="row">
                 <div class="col-md-12">
                     <ul class="menu">
@@ -206,7 +209,7 @@
                             <a href="#funcionamento">FUNCIONAMENTO</a>
                         </li>
                         <li class="">
-                            <a href="#instalacao">INSTALACAO</a>
+                            <a href="#instalacao">INSTALAÇÃO</a>
                         </li>
                         <li class="">
                             <a href="#contact">CONTATO</a>

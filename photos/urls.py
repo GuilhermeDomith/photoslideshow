@@ -4,6 +4,7 @@ from . import view
 app_name = 'photos'
 
 urlpatterns = [
+    
     path('index/', view.IndexView.as_view(), name='index'),
     path('<int:num_album>/selecao/', view.selecao, name='selecao'),
     path('<int:slideshow_codigo>/configuracao/', view.configuracao, name='configuracao'),

@@ -30,11 +30,11 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'l3oKqbH2bos942LxQG'
 '''
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
-    #'192.168.0.17'
+    '192.168.0.17'
 ]
 
 

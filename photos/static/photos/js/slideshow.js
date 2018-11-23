@@ -8,6 +8,8 @@ function check_progress() {
             let progresso = 0;
             path_video = '';
 
+            /* Verifica se o video não está completo, se foi recebido apenas o progresso. 
+                Se não, é recebido um objeto json que indica o path do vídeo.*/
             if(typeof(data) == 'number')
                 progresso = data;
             else{
@@ -22,9 +24,9 @@ function check_progress() {
             barra_prog.css('width', progresso + '%');
 
             if (progresso === true) 
-                setTimeout(inserir_video, 2000);
+                setTimeout(inserir_video, 5000);
             else
-                check_progress();
+                setTimeout(check_progress, 5000);
         }
     });
 }

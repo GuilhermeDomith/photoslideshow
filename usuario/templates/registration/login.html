@@ -19,7 +19,9 @@
           <i id="icone-logo" class="fas fa-images"></i>
           <span>Photo Slideshow</span>
         </h4>
-
+        
+        <small class="form-text text-danger">{{ form.non_field_errors }}</small>
+        
         <div class="form-group">
           <label for="text_usuario">Usuário</label>
           <input type="text" class="form-control" name="username" id="text_usuario" placeholder="Nome de Usuário">
@@ -37,4 +39,6 @@
   </div>
 </div>
 
+
 {% endblock %}
+

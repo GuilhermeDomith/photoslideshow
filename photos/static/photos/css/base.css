@@ -2,6 +2,11 @@
     height: 100%;
 }
 
+/* Faz com que a barra de navegação fique no final*/
+main{
+    min-height: 80vh;
+}
+
 #icone-logo{
     color: #303F9F;
 }
@@ -40,4 +45,12 @@ i.fa-external-link-alt{
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@media(min-height: 1055px){
+
+    /* Mantém a barra de navegação no final*/
+    main{
+        min-height: 100vh;
+    }
 }

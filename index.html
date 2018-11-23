@@ -174,8 +174,7 @@
                 <div class="col-md-8">
                     <p> Para executar a aplicação localmente é necessário o <code>Python 3</code>.</p> <br>
                     <p> Também, o framework <code>Django 2.1</code> e as biblioteca <code>google-auth</code> e
-                        <code>OpenCV</code> devem ser instaladas.</p>
-                    <p> Todos podem ser instalados a partir do pip.</p> <br>
+                        <code>OpenCV</code> devem ser instaladas. Todos podem ser instalados a partir do pip.</p><br>
                     <blockquote class="blockquote">
                         <p>$ pip install django</p>
                         <!-- <p>$ pip install google-auth</p> -->
@@ -189,16 +188,39 @@
                         <p>$ python manage.py migrate</p>
                     </blockquote>
 
-                    <p> Executar o servidor de desenvolvimento do Django.</p><br>
+                    <p> Permitir os hosts no arquivo <code>setings.py</code>.
+
+                        Se a aplicação for executada em um browser de outro 
+                        dispositivo é necessário permitir o ip do servidor para 
+                        que o mesmo seja encontrado na rede local. Como o exemplo a seguir.
+                    </p><br>
+                    
+                    <blockquote class="blockquote">
+                            ALLOWED_HOSTS = [
+                            'localhost',
+                            '192.168.0.17'
+                            ]
+                    </blockquote><br>
+                    
+
+                    <p>Para acessar a partir do proprio computador: </p><br>
                     <blockquote class="blockquote">
                         <p>$ python manage.py runserver 8000</p>
+                        <p>Acesse: localhost:8000/photos/index </p> <br>
                     </blockquote>
 
-                    <p> A aplicação já pode ser acessada pelo endereço.</p><br>
+                    <p>Para acessar a partir de outro dispositivo na rede local:</p><br>
                     <blockquote class="blockquote">
-                        <p>localhost:8000/photos/index</p>
+                        <p>$ python manage.py runserver 192.168.0.17:8000</p>
+                        <p>Acesse: 192.168.0.17:8000/photos/index </p> <br>
                     </blockquote>
 
+                    <p>Caso a opção <code>Debug</code> no arquivo <code>setings.py</code> 
+                        seja <code>False</code> um parâmetro adicional deve ser acrescentado:</p><br>
+                    <blockquote class="blockquote">
+                        <p>$ python manage.py runserver 8000 --insecure </p>
+                    </blockquote>
+                  
                 </div>
             </div>
         </div><!-- .container close -->
